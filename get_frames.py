@@ -25,7 +25,7 @@ def main():
     # Loops through each frame in the video 
     while success:
         print("yay")
-        cv2.imwrite("./data/peaceful/vid5_%d.jpg" % count, image)    # Writes the current frame
+        cv2.imwrite("./data/zombie/vid1_%d.jpg" % count, image)    # Writes the current frame
         for i in range(30):
             success, image = vidcap.read()                      # Gets the subsequent frame
         if success == False:
