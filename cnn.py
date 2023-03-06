@@ -97,6 +97,8 @@ class Net():
             metrics = ['accuracy'],
         )
 
+        self.model.build(input_shape)
+
     def __str__(self):
         self.model.summary()
         return ""
