@@ -11,7 +11,7 @@ train = utils.image_dataset_from_directory(
     'data',
     label_mode = 'categorical',
     batch_size = 32,
-    image_size = (1280, 720),
+    image_size = (320, 180),
     seed = 37,
     validation_split = 0.3,
     subset = 'training',
@@ -21,7 +21,7 @@ test = utils.image_dataset_from_directory(
     'data',
     label_mode = 'categorical',
     batch_size = 32,
-    image_size = (1280, 720),
+    image_size = (320, 180),
     seed = 37,
     validation_split = 0.3,
     subset = 'validation',
@@ -31,17 +31,17 @@ train = train.cache().prefetch(buffer_size = data.AUTOTUNE)
 test = test.cache().prefetch(buffer_size = data.AUTOTUNE)
 
 class Net():
-    def __init__(self, input_shape,):
+    def __init__(self, input_shape):
         self.model = Sequential()
 
         self.model.add(layers.ZeroPadding2D(
-            padding = ((1,0), (2,3))
-        )) #1285x721
+            padding = ((0,0), (1,0))
+        )) #321x180
 
         self.model.add(layers.Conv2D(
                 8, # filters
-                37, # kernel size
-                strides = 12, # step size
+                9, # kernel size
+                strides = 3, # step size
                 activation = 'relu',
                 input_shape = input_shape, # need for first layer
 
@@ -60,11 +60,15 @@ class Net():
             3, # kernel size
             strides = 1, # step size
             activation = 'relu'
-        )) #50x26x64
+        )) #51x27x64
+
+        self.model.add(layers.ZeroPadding2D(
+            padding = ((0,1), (1,0))
+        )) #52x28x64
 
         self.model.add(layers.MaxPool2D(
             pool_size=2,
-        )) #25x13x64
+        )) #26x14x64
 
         self.model.add(layers.Flatten(
         ))
@@ -103,7 +107,7 @@ class Net():
         self.model.summary()
         return ""
 
-net = Net((1280,720,3))
+net = Net((32, 320, 180, 3))
 
 print(net)
 
@@ -114,4 +118,4 @@ net.model.fit(
     validation_data = test,
     validation_batch_size = 32,
 )
-net.model.save('faces_model_save')
+net.model.save('zombie_model_save')
